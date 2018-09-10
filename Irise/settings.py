@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'clibs.apps.ClibsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -73,6 +74,7 @@ WSGI_APPLICATION = 'Irise.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# sql_mode 严格模式，进行数据的严格校验，保证错误数据不能插入，报error错误，Django strongly recommends activate it
 
 DATABASES = {
     'default': {
@@ -81,10 +83,13 @@ DATABASES = {
         'USER': 'Iriseuser',
         'PASSWORD': 'Irisepwd',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }
-
+# sql_mode 严格模式，进行数据的严格校验，保证错误数据不能插入，报error错误，Django strongly recommends activate it
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
