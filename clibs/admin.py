@@ -13,7 +13,7 @@ class CodeLibInline(admin.StackedInline):
 class CodeSearchInfoAdmin(admin.ModelAdmin):
     # 控制显示的字段列表
     list_display = ('custom_keyword', 'join_tags', 'code_language', 'code_description', 'relation_info',
-                    'extra_file_view','create_date', 'last_modified_date',)
+                    'file_view', 'create_date', 'last_modified_date',)
     # 控制字段可以link到当前行对象的修改界面
     list_display_links = ('custom_keyword',)
     # list_editable 控制行中的Cell是否可编辑，不可同时与list_display_links中出现的字段重复，会冲突

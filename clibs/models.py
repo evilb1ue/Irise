@@ -37,18 +37,18 @@ class CodeSearchInfo(models.Model):
     code_language = models.ForeignKey(Language, on_delete=models.CASCADE, verbose_name='语言')
     code_description = models.CharField(max_length=256, verbose_name='描述', blank=True)
     relation_info = models.CharField(max_length=256, verbose_name='关联信息', blank=True)
-    extra_file = models.FileField(verbose_name='附件', upload_to='uploads/clibs/%Y/%m/', null=True, blank=True)
+    file = models.FileField(verbose_name='附件', upload_to='uploads/clibs/%Y/%m/%d/', blank=True)
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     last_modified_date = models.DateTimeField(verbose_name='最近修改', auto_now=True)
 
-    def extra_file_view(self):
-        if self.extra_file:
-            return format_html('<a href="{}">{}</a>', self.extra_file.url,
-                               self.extra_file.name[self.extra_file.name.__str__().rindex('/')+1:])
+    def file_view(self):
+        if self.file:
+            return format_html('<a href="{}">{}</a>', self.file.url,
+                               self.file.name[self.file.name.__str__().rindex('/') + 1:])
         else:
             return format_html('')
-    extra_file_view.short_description = '附件'
-    extra_file_view.admin_order_field = 'extra_file'
+    file_view.short_description = '附件'
+    file_view.admin_order_field = 'file'
 
     def join_tags(self):
         return ','.join(self.tag.values_list('tag_text', flat=True))
