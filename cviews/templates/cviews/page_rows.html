@@ -1,0 +1,3 @@
+{% for page_row in page_rows %}
+    <li id="page-row{{ page_row.id }}" onclick="handleChangePageRow('{{ page_row.id }}')"><a>{{ page_row }}</a></li>
+{% endfor %}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>初升</title>
+
+    {% load static %}
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'cviews/bootstrap-3.3.7-dist/css/bootstrap.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>初升</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="nav nav-tabs" id="pages">
+                {% for page in pages %}
+                    <li id="page{{ page.id }}"
+                        onclick="handleChangePage('{{ page.id }}');">
+                        <a>{{ page }}</a></li>
+                {% endfor %}
+                </ul>
+                <input type="hidden" id="current-page-id" value=""/>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+
+        <div class="row">
+
+            <div class="col-xs-2 ">
+                <ul class="nav nav-tabs nav-stacked" id="page-rows">
+                </ul>
+                <input type="hidden" id="current-page-row-id" value=""/>
+            </div>
+
+            <div class="col-xs-10" id="content-area">
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p>
+                <p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p>
+                <p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="{% static 'cviews/js/jquery-3.3.1.min.js' %}"></script>
+    <!-- 自定义JS -->
+    <script src="{% static 'cviews/js/tools.js' %}"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="{% static 'cviews/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

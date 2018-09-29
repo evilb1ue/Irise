@@ -12,7 +12,7 @@ class CodeLibInline(admin.StackedInline):
 
 class CodeSearchInfoAdmin(admin.ModelAdmin):
     # 控制显示的字段列表
-    list_display = ('custom_keyword', 'join_tags', 'code_language', 'code_description', 'relation_info',
+    list_display = ('id', 'custom_keyword', 'join_tags', 'code_language', 'code_description', 'relation_info',
                     'file_view', 'create_date', 'last_modified_date',)
     # 控制字段可以link到当前行对象的修改界面
     list_display_links = ('custom_keyword',)
