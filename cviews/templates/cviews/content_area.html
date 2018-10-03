@@ -1,0 +1,260 @@
+{% load custom_tags %}
+
+<!-- 此处使用btn样式仅为了文字与后面对齐-->
+<div class="col-xs-12" id="task-area">
+    <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white"
+    {% if config|dict_get:'Author' != None or config|dict_get:'Language' != None or config|dict_get:'CodeDescription' != None%}
+    title="Help" data-container="body" data-toggle="popover" data-placement="auto top" data-trigger="focus" data-html="true"
+            data-content="
+            {% if config|dict_get:'Author' != None %}
+            作者：{{ config|dict_get:'Author'|safe }}<br/>
+            {% endif %}
+            {% if config|dict_get:'Language' != None %}
+            语言：{{ config|dict_get:'Language'|safe }}<br/>
+            {% endif %}
+            {% if config|dict_get:'CodeDescription' != None %}
+            描述：{{config|dict_get:'CodeDescription'|safe }}
+            {% endif %}"
+    {% endif %}
+    >Task </button>
+    <input type="hidden" id="current-page-row-tid"
+        {% if page_row_task == None %}
+           value="-1"
+        {% else%}
+           value="{{ page_row_task.id }}"
+        {% endif %}
+    >
+    <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-default" id="task" >
+            {% if page_row_task != None %}
+                {{ page_row_task.task_info }}
+            {% else %}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {% endif %}
+        </button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="max-height:500px;max-width:200px;overflow:scroll;overflow-style:auto;">
+            {% for t in tasks %}
+
+                <li style="background-color: {% if t.task_progress == 100 %}lawngreen{% elif t.task_progress == 0%}orange{% else %}red{% endif %};"
+                >
+                    <a>{{ t.task_info }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-warning">执行</button>
+        <button type="button" class="btn btn-success">新建</button>
+        <button type="button" class="btn btn-info">查询</button>
+        <button type="button" class="btn btn-danger"  onclick="alert($('input[name=\'options\']:checked').val())">清除</button>
+    </div>
+</div>
+<div class="col-xs-12">
+    <hr style="height:2px;border:none;border-top:2px groove skyblue;" />
+</div>
+
+<div class="col-xs-12" id="cmd-area">
+
+     <div>
+        <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white">Cmd </button>
+     </div>
+
+    {% for k,v in config|dict_get:'Cmd'|dict_items %}
+
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-default btn-sm pull-right" style="border-style: hidden; background-color: white" id="btn_{{ k }}"
+                    {% if v|dict_get:'Help' != None %}
+                    title="Help" data-container="body" data-toggle="popover" data-placement="auto top" data-trigger="focus" data-html="true"
+                    data-content="{{ v|dict_get:'Help'|safe }}"
+                    {% endif %}
+            >{% if v|dict_get:'Caption' != None %}{{ v|dict_get:'Caption' }} {% else %}{{ k }}{% endif %}</button>
+        </div>
+
+        {% if v|dict_get:'View'|dict_get:'Type' == 'radio'  %}
+            <div class="col-xs-10 btn-group btn-group-sm" data-toggle="buttons" id="div_{{ k }}">
+
+            {% for l in v|dict_get:'View'|dict_get:'List' %}
+                <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                    <input type="radio" name="{{ k }}" id="radio_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                </label>
+            {% endfor %}
+
+            </div>
+
+{#                <label class="btn btn-default active">#}
+{#                  <input type="radio" name="options" id="options1" value="人类友好" checked="checked"> 人类友好#}
+{#                </label>#}
+{#                <label class="btn btn-default">#}
+{#                    <input type="radio" name="options" id="options2" value="机器友好"> 机器友好#}
+{#                </label>#}
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'checkbox'  %}
+
+            <div class="col-xs-10 btn-group btn-group-sm"  data-toggle="buttons" id="div_{{ k }}">
+                {% for l in v|dict_get:'View'|dict_get:'List' %}
+                    <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                        <input type="checkbox" name="{{ k }}" id="checkbox_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                    </label>
+                {% endfor %}
+            </div>
+
+{#            <div class="col-xs-10 btn-group btn-group-sm"  data-toggle="buttons">#}
+{#                <label class="btn btn-default">#}
+{#                    <input type="checkbox" name="coptions" id="coptions1" value="flag"> flag#}
+{#                </label>#}
+{#                <label class="btn btn-default">#}
+{#                    <input type="checkbox" name="coptions" id="coptions2" value="key"> key#}
+{#                </label>#}
+{#            </div>#}
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'text' %}
+
+            <div class="col-xs-10" id="div_{{ k }}">
+                <input type="text" class="form-control input-sm" name="{{ k }}" id="text_{{ k }}1" value="">
+            </div>
+{#            <div class="col-xs-10">#}
+{#                <input type="text" class="form-control input-sm" id="range" value="(65,90);(97,122);">#}
+{#            </div>#}
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'textarea'  %}
+            <div class="col-xs-10" id="div_{{ k }}">
+                <textarea rows="8" class="form-control" name="{{ k }}" id="textarea_{{ k }}1"></textarea>
+            </div>
+
+{#            <textarea rows="8" class="form-control">Uryyb, Unpxre jbeyq!</textarea>#}
+
+        {% endif %}
+
+        <div class="col-xs-12" style="height: 4px;">{# 用于分割间隔 #}</div>
+    {% endfor %}
+
+</div>
+
+<div class="col-xs-12">
+    <hr style="height:2px;border:none;border-top:2px groove forestgreen;" />
+</div>
+
+<div class="col-xs-12 " id="input-area">
+    <div>
+        <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white">Input </button>
+    </div>
+
+    {% for k,v in config|dict_get:'Input'|dict_items %}
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-default btn-sm pull-right" style="border-style: hidden; background-color: white" id="btn_{{ k }}"
+                    {% if v|dict_get:'Help' != None %}
+                    title="Help" data-container="body" data-toggle="popover" data-placement="auto top" data-trigger="focus" data-html="true"
+                    data-content="{{ v|dict_get:'Help'|safe }}"
+                    {% endif %}
+            >{% if v|dict_get:'Caption' != None %}{{ v|dict_get:'Caption' }} {% else %}{{ k }}{% endif %}</button>
+        </div>
+
+        {% if v|dict_get:'View'|dict_get:'Type' == 'radio'  %}
+
+            <div class="col-xs-10 btn-group btn-group-sm" data-toggle="buttons" id="div_{{ k }}">
+                {% for l in v|dict_get:'View'|dict_get:'List' %}
+                    <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                        <input type="radio" name="{{ k }}" id="radio_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                    </label>
+                {% endfor %}
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'checkbox'  %}
+
+            <div class="col-xs-10 btn-group btn-group-sm"  data-toggle="buttons" id="div_{{ k }}">
+                {% for l in v|dict_get:'View'|dict_get:'List' %}
+                    <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                        <input type="checkbox" name="{{ k }}" id="checkbox_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                    </label>
+                {% endfor %}
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'text' %}
+
+            <div class="col-xs-10" id="div_{{ k }}">
+                <input type="text" class="form-control input-sm" name="{{ k }}" id="text_{{ k }}1" value="">
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'textarea'  %}
+
+            <div class="col-xs-10" id="div_{{ k }}">
+                <textarea rows="8" class="form-control" name="{{ k }}" id="textarea_{{ k }}1"></textarea>
+            </div>
+
+        {% endif %}
+
+        <div class="col-xs-12" style="height: 4px;"><!--用于分割间隔--></div>
+    {% endfor %}
+
+</div>
+
+<div class="col-xs-12">
+    <hr style="height:2px;border:none;border-top:2px groove orchid;" />
+</div>
+
+<div class="col-xs-12 " id="output-area">
+    <div>
+        <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white">Output </button>
+    </div>
+
+    {% for k,v in config|dict_get:'Output'|dict_items %}
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-default btn-sm pull-right" style="border-style: hidden; background-color: white" id="btn_{{ k }}"
+                    {% if v|dict_get:'Help' != None %}
+                    title="Help" data-container="body" data-toggle="popover" data-placement="auto top" data-trigger="focus" data-html="true"
+                    data-content="{{ v|dict_get:'Help'|safe }}"
+                    {% endif %}
+            >{% if v|dict_get:'Caption' != None %}{{ v|dict_get:'Caption' }} {% else %}{{ k }}{% endif %}</button>
+        </div>
+
+        {% if v|dict_get:'View'|dict_get:'Type' == 'radio'  %}
+
+            <div class="col-xs-10 btn-group btn-group-sm" data-toggle="buttons" id="div_{{ k }}">
+                {% for l in v|dict_get:'View'|dict_get:'List' %}
+                    <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                        <input type="radio" name="{{ k }}" id="radio_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                    </label>
+                {% endfor %}
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'checkbox'  %}
+
+            <div class="col-xs-10 btn-group btn-group-sm"  data-toggle="buttons" id="div_{{ k }}">
+                {% for l in v|dict_get:'View'|dict_get:'List' %}
+                    <label class="btn btn-default" id="label_{{ k }}{{ forloop.counter }}">
+                        <input type="checkbox" name="{{ k }}" id="checkbox_{{ k }}{{ forloop.counter }}" value="{{ l }}">{{ l }}
+                    </label>
+                {% endfor %}
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'text' %}
+
+            <div class="col-xs-10" id="div_{{ k }}">
+                <input type="text" class="form-control input-sm" name="{{ k }}" id="text_{{ k }}1" value="">
+            </div>
+
+        {% elif v|dict_get:'View'|dict_get:'Type' == 'textarea'  %}
+
+            <div class="col-xs-10" id="div_{{ k }}">
+                <textarea rows="8" class="form-control" name="{{ k }}" id="textarea_{{ k }}1"></textarea>
+            </div>
+
+        {% endif %}
+
+        <div class="col-xs-12" style="height: 4px;"><!--用于分割间隔--></div>
+    {% endfor %}
+
+</div>
+
+<div class="col-xs-12">
+    <hr style="height:2px;border:none;border-top:2px groove slateblue;" />
+</div>
+
+<script>
+    {#启用插件#}
+    $(function () { $("[data-toggle='popover']").popover();})
+</script>

@@ -29,7 +29,7 @@ class PageRow(models.Model):
     pid = models.ForeignKey(Page, verbose_name='页ID', on_delete=models.CASCADE)
     cid = models.IntegerField(verbose_name='代码相关ID')
     # -1 代表没创建任何任务
-    tid = models.IntegerField(verbose_name='任务相关ID')
+    tid = models.IntegerField(verbose_name='任务相关ID', default=-1)
     name = models.CharField(max_length=128, blank=True, verbose_name='名称')
     order = models.IntegerField(verbose_name='顺序')
 
@@ -52,6 +52,9 @@ class Task(models.Model):
     # 0-100
     task_progress = models.IntegerField(verbose_name='进度', default=0)
     # task_description = models.CharField(max_length=128, verbose_name='任务描述', blank=True)
+
+    def task_info(self):
+        return self.create_time.strftime('%Y-%m-%d %H:%M:%S ') + self.task_progress.__str__()
 
     def __str__(self):
         return self.create_time.__str__() + " progress:" + self.task_progress.__str__()

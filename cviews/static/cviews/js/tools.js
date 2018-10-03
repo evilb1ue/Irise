@@ -11,6 +11,7 @@ $(function () {
     if(page.length > 0) {
         page.trigger('click')
     }
+
 })
 
 //  Page
@@ -42,7 +43,7 @@ function changePage(newPageId) {
     $("#page" + newPageId.toString()).addClass("active")
 
     // 4. 清空现有页行,实现一个清空动作，在ajax获取之前表现出程序已进行处理的效果，实际没什么用
-    $("#page-rows").html("")
+    // $("#page-rows").html("")   // 使用这个界面会有一个一闪而过的效果，并不理想，放弃
 
     // 5. 获取新的页行,并填充
     // 返回的是deferred对象，可以进行链式操作
@@ -141,27 +142,30 @@ function changePageRow(newPageRowId) {
     $("#page-row" + newPageRowId.toString()).addClass("active")
 
     // 4. 清空现有ContentArea,实现一个清空动作，在ajax获取之前表现出程序已进行处理的效果，实际没什么用
-    $("#content-area").html("")
+    // $("#content-area").html("")   // 使用这个界面会有一个一闪而过的效果，并不理想，放弃
 
     // 5. 更新当前Page指向的PageRow, 并获取新的页行对应的界面定义,创建页行界面
     // 如果页行没有对应的任务，则创建一个新的任务，作为默认选中
+    // 正常情况下该page-id一定存在，不然就是什么地方出现问题了
+    pageId = $("#current-page-id").val()
+    flag = false
     $.ajax({
         async: false,
         method: "POST",
-        url: "/cviews/selected_page_row/",
-        data: { "page_id": newPageId.toString()},
-        dataType: "text",
+        url: "/cviews/update_page_and_fetch_content/",
+        data: { "page_id": pageId.toString(), "page_row_id": newPageRowId.toString()},
+        dataType: "html",
         timeout: 0,
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-    }).done(function (selectedPageRowID) {
-        target = $("#page-row"+selectedPageRowID.toString())
-        // length大于0代表查找对象存在，0代表不存在
-        if(target.length > 0){
-            target.trigger("click")
-        }
+    }).done(function (html) {
+        $("#content-area").html(html)
+        flag = true
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert("Request failed: "+textStatus)
+        flag = false
     })
+    if(flag === false)
+        return;
 
     // 6. 触发新的任务查询事件，填充数据
 
