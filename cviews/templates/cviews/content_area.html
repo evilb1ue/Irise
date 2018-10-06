@@ -24,6 +24,7 @@
            value="{{ page_row_task.id }}"
         {% endif %}
     >
+    <input type="hidden" id="current-page-row-config" value="None">
     <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-default" id="task" >
             {% if page_row_task != None %}
@@ -37,10 +38,11 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" style="max-height:500px;max-width:200px;overflow:scroll;overflow-style:auto;">
+        <ul class="dropdown-menu" role="menu" style="max-height:500px;max-width:220px;overflow:scroll;overflow-style:auto;">
             {% for t in tasks %}
 
-                <li style="background-color: {% if t.task_progress == 100 %}lawngreen{% elif t.task_progress == 0%}orange{% else %}red{% endif %};"
+                <li style="background-color: {% if t.task_progress == 2 %}lawngreen{% elif t.task_progress == 0%}orange{% else %}red{% endif %};"
+                    onclick='changeTask("{{ t.id }}")'
                 >
                     <a>{{ t.task_info }}</a>
                 </li>
@@ -48,10 +50,10 @@
         </ul>
     </div>
     <div class="btn-group btn-group-sm">
-        <button type="button" class="btn btn-warning">执行</button>
-        <button type="button" class="btn btn-success">新建</button>
-        <button type="button" class="btn btn-info">查询</button>
-        <button type="button" class="btn btn-danger"  onclick="alert($('input[name=\'options\']:checked').val())">清除</button>
+        <button type="button" class="btn btn-warning" onclick="excuteTask()">执行</button>
+        <button type="button" class="btn btn-success" onclick="newTask()">新建</button>
+        <button type="button" class="btn btn-info" onclick="searchTask()">查询</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clear-modal">清除</button>
     </div>
 </div>
 <div class="col-xs-12">

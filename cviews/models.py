@@ -48,13 +48,14 @@ class Task(models.Model):
     # 该模型对应一个任务
 
     prid = models.ForeignKey(PageRow, verbose_name='页行ID', on_delete=models.CASCADE)
-    create_time = models.DateField(verbose_name='创建时间', auto_now_add=True)
-    # 0-100
+    create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    # 0-2 0 - > 准备  1 -》 执行  2 -> 完成   （原本计划0-100, 但要做更多的事情暂时将其设定为0,1,2使用）
     task_progress = models.IntegerField(verbose_name='进度', default=0)
     # task_description = models.CharField(max_length=128, verbose_name='任务描述', blank=True)
 
     def task_info(self):
-        return self.create_time.strftime('%Y-%m-%d %H:%M:%S ') + self.task_progress.__str__()
+        task_map = {0: '准备', 1: '执行', 2: '完成'}
+        return self.create_time.strftime('%Y-%m-%d %H:%M:%S ') + task_map[self.task_progress]
 
     def __str__(self):
         return self.create_time.__str__() + " progress:" + self.task_progress.__str__()

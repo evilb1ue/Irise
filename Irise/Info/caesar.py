@@ -70,12 +70,12 @@ Default 必须  checkbox时，为数组，空数组不选则   radio时，就为
 第一个三引号注释，必须为配置Json   且属性名称必须用双引号
 Cmd可以是空的，但不能没有  Input Output都是必须的
 Cmd Input Output中的属性名都要不相同
+radio 的 Default必须指定一个值且只有一个值， checkbox Default可以指定空数组，或者字符串数组
 """
 
 
 # 不处理异常，如果出现问题，就放弃执行，退回准备状态，假定数据都是正确格式进行处理
-def handle(dict_cmd, dict_input):
-    dict_output = {}
+def handle(dict_cmd, dict_input, dict_output):
 
     # 参数获取失败抛出KeyError
     cmd_range = dict_cmd['cmd_range']
@@ -133,8 +133,11 @@ def caesar(cmd_range, cmd_output_format, cmd_filter, input_data, dict_output):
 
 
 # 入口函数
-def main(dict_cmd, dict_input):
-    return handle(dict_cmd, dict_input)
+def main(context, dict_cmd, dict_input, dict_output):
+    return handle(dict_cmd, dict_input, dict_output)
 
+# context dict_cmd dict_input dict_output 在执行时会动传递
+# main(context=context, dict_cmd=dict_cmd, dict_input=dict_input, dict_output=dict_output)
+main(context, dict_cmd, dict_input, dict_output)
 
-print(main({'cmd_range': '(65,90);(97,122);', 'cmd_ouput_format': '人类友好', 'cmd_filter': []}, {'input_data':'Uryyb, Unpxre jbeyq!'})['output_data'])
+# print(main(context={}, dict_cmd= {'cmd_range': '(65,90);(97,122);', 'cmd_ouput_format': '人类友好', 'cmd_filter': []}, dict_input= {'input_data':'Uryyb, Unpxre jbeyq!'}, dict_output={})['output_data'])

@@ -42,36 +42,66 @@
             </div>
 
             <div class="col-xs-10" id="content-area">
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p>
-                <p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p>
-                <p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p><p>plugin-content</p>
+
             </div>
 
         </div>
+
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="clear-modal" tabindex="-1" role="dialog" aria-labelledby="clear-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="clear-modal-label">任务清除</h4>
+                </div>
+                <div class="modal-body">
+                     <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white" >方式</button>
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
+                     <label class="btn btn-default active" id="label_clear_task_way1">
+                        <input type="radio" name="radio_clear_task_way_cview" value="clear_finished" checked>清除所有完成状态任务
+                    </label>
+                    <label class="btn btn-default" id="label_clear_task_way2" style="color:red">
+                        <input type="radio" name="radio_clear_task_way_cview" value="clear_force_all">强制清除所有相关任务
+                    </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="clear_task_modal_close">关闭</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="task_clear()">清除</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="info-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="info-modal-label">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-default btn-sm" style="border-style: hidden; background-color: white" id="info_content_btn"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="info_modal_close">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="{% static 'cviews/js/jquery-3.3.1.min.js' %}"></script>
     <!-- 自定义JS -->
     <script src="{% static 'cviews/js/tools.js' %}"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="{% static 'cviews/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'cviews/bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
 
 </body>
 </html>
